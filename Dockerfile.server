@@ -1,0 +1,37 @@
+# Use an official Rust runtime as a parent image
+FROM rust:1.77-slim as builder
+
+# Create a new empty shell project
+#RUN USER=root cargo new --bin server
+WORKDIR /server
+
+#install build dependencies
+RUN apt update
+RUN apt-get -y install protobuf-compiler
+
+# Copy our manifests
+#RUN mkdir ./src/server
+COPY . .
+#COPY ./src/server/main.rs ./src/server
+#COPY ./build.rs ./
+#COPY ./Cargo.toml ./Cargo.lock ./
+
+# This build step will cache your dependencies
+RUN cargo build --release
+RUN rm src/*.rs
+
+# Now that the dependencies are built, copy your source code
+COPY ./src ./src
+
+# Build for release.
+RUN rm ./target/release/deps/server*
+RUN cargo build --bin server --release
+
+# Final base
+FROM debian:bookworm-slim
+
+# Copy the build artifact from the build stage
+COPY --from=builder /server/target/release/server .
+
+# Set the startup command to run your binary
+CMD ["./server"]
