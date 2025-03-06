@@ -1,3 +1,5 @@
+Work done for Nillion web3 network March 2024
+
 # Chaum-Pedersen Zero Knowledge Proof
 
 This program is an implementation of the Chaum-Pedersen ZKP protocol that allows
@@ -52,7 +54,7 @@ h ^ q mod p = 1
 # Dependencies
 
 - `rustc` (compiler) and `rustup` (package manager)
-- `cmake` for the gRCP library
+- `cmake` for the gRPC library
 - `docker` and `docker-compose` if you are going to run in a docker container
 
 If you have all the dependencies installed, then run from the main directory the
